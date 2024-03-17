@@ -53,7 +53,7 @@ GlobalState = _GlobalState()
 @dataclass(frozen=True)
 class TTSRequest:
     text: str
-    speaker_ref_path: Optional[str] = None
+    speaker_ref_path: Optional[str] = './assets/odyssey.wav'
     guidance: float = 3.0
     top_p: float = 0.95
     top_k: Optional[int] = None
@@ -71,10 +71,9 @@ async def text_to_speech(req: Request):
     wav_out_path = None
 
     try:
-        headers = req.headers
-        payload = headers["X-Payload"]
-        payload = json.loads(payload)
-        tts_req = TTSRequest(**payload)
+        body = await req.body()
+        body = json.loads(body)
+        tts_req = TTSRequest(**body)
         with tempfile.NamedTemporaryFile(suffix=".wav") as wav_tmp:
             if tts_req.speaker_ref_path is None:
                 wav_path = _convert_audiodata_to_wav_path(audiodata, wav_tmp)

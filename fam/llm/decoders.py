@@ -9,8 +9,9 @@ import torch
 from audiocraft.data.audio import audio_read, audio_write
 from audiocraft.models import MultiBandDiffusion  # type: ignore
 
-mbd = MultiBandDiffusion.get_mbd_24khz(bw=6)  # 1.5
-
+print(1)
+mbd = MultiBandDiffusion.get_mbd_24khz(bw=6, device=torch.device('cpu'))  # 1.5
+print(2)
 
 class Decoder(ABC):
     @abstractmethod

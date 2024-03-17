@@ -38,12 +38,13 @@ RUN touch README.md # poetry will complain otherwise
 
 RUN poetry install --without dev --no-root
 RUN poetry run python -m pip install torch==2.2.1 torchaudio==2.2.1 && \
-  rm -rf $POETRY_CACHE_DIR
-
+    rm -rf $POETRY_CACHE_DIR
+COPY assets ./assets
+COPY model ./model
 COPY fam ./fam
 COPY serving.py ./
 COPY app.py ./
 
 RUN poetry install --only-root
 
-ENTRYPOINT ["poetry", "run", "python", "serving.py"]
+ENTRYPOINT ["poetry", "run", "python", "serving.py", "--quantisation_mode", "int4"]

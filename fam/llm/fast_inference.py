@@ -60,7 +60,9 @@ class TTS:
         # the torch.compiled-model.
         self._dtype = get_default_dtype()
         self._device = get_device()
-        self._model_dir = snapshot_download(repo_id=model_name)
+        print(get_device())
+        print(quantisation_mode)
+        self._model_dir = './model'
         self.first_stage_adapter = FlattenedInterleavedEncodec2Codebook(end_of_audio_token=self.END_OF_AUDIO_TOKEN)
         self.output_dir = output_dir
         os.makedirs(self.output_dir, exist_ok=True)
@@ -159,3 +161,4 @@ class TTS:
 
 if __name__ == "__main__":
     tts = tyro.cli(TTS)
+    tts.synthesize('When in the Course of human events, it becomes necessary for one people to dissolve the political bands which have connected them with another, and to assume among the powers of the earth, the separate and equal station to which the Laws of Nature and of Nature\'s God entitle them, a decent respect to the opinions of mankind requires that they should declare the causes which impel them to the separation.', '.\\assets\\odyssey.mp3')
